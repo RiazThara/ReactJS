@@ -1,6 +1,13 @@
 import styles from "./Product.module.css";
+import Book from "./Book";
 
-function Product(props) {
+type ProductProps = Book & {
+  inCart: boolean,
+  addToCart: (product: Book) => void,
+  removeFromCart: (id: string) => void,
+};
+
+function Product(props : ProductProps) {
   const {
     id,
     title,
@@ -19,7 +26,7 @@ function Product(props) {
     console.log(inCart);
     if (inCart) {
       props.removeFromCart(id);
-      console.log(id)
+      console.log(id);
     } else {
       props.addToCart({ id: id, title: title, price: price });
     }
@@ -57,6 +64,5 @@ function Product(props) {
     </div>
   );
 }
-
 
 export default Product;

@@ -1,4 +1,4 @@
-import Product from "./Product.jsx";
+import Product from "./Product.tsx";
 import styles from "./ProductList.module.css";
 import Book from "./Book.tsx";
 

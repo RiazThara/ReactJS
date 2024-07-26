@@ -5,11 +5,24 @@ import ProductList from "./ProductList.tsx";
 import Footer from "./Footer.tsx";
 import Cart from "./Cart.tsx";
 import Book  from "./Book.tsx";
+import * as actionCreators from "../actions";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
 
-function App() {
-  const [itemsInCart, setItemsInCart] = useState<Array<Book>>([]);
-  const [products, setProducts] = useState<Array<Book>>([]);
+
+  const mapStateToProps = (state: any, props: any) => {
+    return {
+      itemsInCart: state.cart.items,
+      products: state.products.products,
+    };
+  };
+  const mapDispatchToProps = (dispatch: any, props: any) => {
+    return bindActionCreators(actionCreators, dispatch);
+  };
+
+function App(props: any) {
   const [isLoading, setIsLoading] = useState<Boolean>(false);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -20,7 +33,7 @@ function App() {
         );
         const json = await response.json();
         const shuffledArray = shuffleArray(json);
-        setProducts(shuffledArray);
+        props.loadProducts(shuffledArray);
         setIsLoading(false);
       } catch (e) {
         console.error(e);
@@ -29,14 +42,6 @@ function App() {
     fetchData();
   }, []);
 
-  function addToCart(product: Book) {
-    let newItems = [...itemsInCart, product];
-    setItemsInCart(newItems);
-  }
-  function removeFromCart(idToRemove: string) {
-    let newItems = itemsInCart.filter((item) => item.id !== idToRemove);
-    setItemsInCart(newItems);
-  }
   function shuffleArray(array: Book[]) {
     for (let i = array.length - 1; i > 0; i--) {
       let j = Math.floor(Math.random() * (i + 1));
@@ -56,14 +61,14 @@ function App() {
         <div className="row">
           <div className="col-md-8">
             <ProductList
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
-              itemsInCart={itemsInCart}
-              products={products}
+              addToCart={props.addToCart}
+              removeFromCart={props.removeFromCart}
+              itemsInCart={props.itemsInCart}
+              products={props.products}
             />
           </div>
           <div className="col-md-4">
-            <Cart itemsInCart={itemsInCart} />
+            <Cart itemsInCart={props.itemsInCart} />
           </div>
         </div>
         <Footer />
@@ -71,4 +76,4 @@ function App() {
     );
   }
 }
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
