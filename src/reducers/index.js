@@ -12,6 +12,8 @@ export function cart(state = { items: [] }, action = {}) {
           (item) => item.id !== action.payload.productId
         ),
       };
+    case "CHECKOUT/fulfilled":
+      return { ...state, items: [] };
     default:
       return state; //no relevant action type
   }
