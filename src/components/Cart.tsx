@@ -1,7 +1,7 @@
 import CartItem from "./CartItem";
 import Book from "./Book";
 
-function Cart(props: { itemsInCart: Book[] }) {
+function Cart(props: { itemsInCart: Book[] , submitCart :(itemsInCart:Book[]) =>void }) {
   return (
     <div>
       <h2>Cart</h2>
@@ -14,6 +14,11 @@ function Cart(props: { itemsInCart: Book[] }) {
         0
       )}{" "}
       USD
+      <div>
+        <button onClick={() => props.submitCart(props.itemsInCart)}>
+          Check Out
+        </button>
+      </div>
     </div>
   );
 }

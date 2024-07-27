@@ -5,7 +5,7 @@ import ProductList from "./ProductList.tsx";
 import Footer from "./Footer.tsx";
 import Cart from "./Cart.tsx";
 import Book  from "./Book.tsx";
-import * as actionCreators from "../actions";
+import * as actionCreators from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
@@ -68,7 +68,10 @@ function App(props: any) {
             />
           </div>
           <div className="col-md-4">
-            <Cart itemsInCart={props.itemsInCart} />
+            <Cart
+              submitCart={props.submitCart}
+              itemsInCart={props.itemsInCart}
+            />
           </div>
         </div>
         <Footer />

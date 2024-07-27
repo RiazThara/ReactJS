@@ -1,13 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  waitFor,
-} from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 import App from "./App.tsx";
+import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers } from "redux";
+import { cart, products } from "../reducers";
+import { Provider } from "react-redux";
 
+const rootReducer = combineReducers({
+  cart: cart,
+  products: products,
+});
+const store = configureStore({ reducer: rootReducer });
 
 const mockResponse = [
   {
@@ -25,7 +29,7 @@ const mockResponse = [
 ];
 
 // Mock the global fetch function
-beforeEach(() =>{
+beforeEach(() => {
   vi.spyOn(global, "fetch").mockResolvedValue({
     json: vi.fn().mockResolvedValue(mockResponse),
   });
@@ -33,20 +37,21 @@ beforeEach(() =>{
 
 describe("App Component", () => {
   it("should remove loading message once data is loaded", async () => {
-    render(<App />);
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
 
     // Verify the loading message is in the document initially
     expect(screen.getByRole("status")).toBeInTheDocument();
 
     // Wait for the isLoading state to be false
-    await waitFor(
-      () => {
-        expect(screen.queryByRole("status")).not.toBeInTheDocument();
-      }
-    );
-    screen.debug();
+    await waitFor(() => {
+      expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    });
+    // screen.debug();
     // Verify that the loaded data is displayed
     expect(screen.getByText("Welcome to React Bookstore")).toBeInTheDocument();
   });
-
 });
