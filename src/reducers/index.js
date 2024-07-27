@@ -14,6 +14,11 @@ export function cart(state = { items: [] }, action = {}) {
       };
     case "CHECKOUT/fulfilled":
       return { ...state, items: [] };
+    case "READ_CART_FROM_LOCAL_STORAGE":
+      return {
+        ...state,
+        items: action.payload || [],
+      };
     default:
       return state; //no relevant action type
   }

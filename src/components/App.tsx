@@ -34,6 +34,7 @@ function App(props: any) {
         const json = await response.json();
         const shuffledArray = shuffleArray(json);
         props.loadProducts(shuffledArray);
+        props.readCartFromLocalStorage();
         setIsLoading(false);
       } catch (e) {
         console.error(e);

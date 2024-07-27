@@ -15,7 +15,8 @@ const rootReducer = combineReducers({
   products: products,
 });
 
-const store = configureStore({ reducer: rootReducer });
+export const store = configureStore({ reducer: rootReducer });
+
 if (element !== null) {
   const root = ReactDOM.createRoot(element);
   root.render(
