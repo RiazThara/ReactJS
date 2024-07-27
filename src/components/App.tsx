@@ -8,6 +8,7 @@ import Book  from "./Book.tsx";
 import * as actionCreators from "../actions"
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { Routes, Route } from "react-router-dom";
 
 
   const mapStateToProps = (state: any, props: any) => {
@@ -58,23 +59,29 @@ function App(props: any) {
   } else {
     return (
       <div className="container">
-        <Header />
-        <div className="row">
-          <div className="col-md-8">
-            <ProductList
-              addToCart={props.addToCart}
-              removeFromCart={props.removeFromCart}
-              itemsInCart={props.itemsInCart}
-              products={props.products}
-            />
-          </div>
-          <div className="col-md-4">
-            <Cart
-              submitCart={props.submitCart}
-              itemsInCart={props.itemsInCart}
-            />
-          </div>
-        </div>
+        <Header itemsInCart={props.itemsInCart} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProductList
+                products={props.products}
+                itemsInCart={props.itemsInCart}
+                addToCart={props.addToCart}
+                removeFromCart={props.removeFromCart}
+              />
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                itemsInCart={props.itemsInCart}
+                submitCart={props.submitCart}
+              />
+            }
+          />
+        </Routes>
         <Footer />
       </div>
     );
